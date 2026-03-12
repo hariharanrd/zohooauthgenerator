@@ -662,18 +662,7 @@
             <div class="card-body">
                 <div class="form-row">
                     <label class="field-label" for="dcSelect">Select your Zoho Data Center (DC) <span class="required">*</span></label>
-                    <select id="dcSelect" onchange="onDCChange()">
-                        <option value="">— Select Data Center —</option>
-                        <option value="US" selected>🇺🇸 United States (zoho.com)</option>
-                        <option value="EU">🇪🇺 Europe (zoho.eu)</option>
-                        <option value="IN">🇮🇳 India (zoho.in)</option>
-                        <option value="AU">🇦🇺 Australia (zoho.com.au)</option>
-                        <option value="JP">🇯🇵 Japan (zoho.jp)</option>
-                        <option value="UK">🇬🇧 United Kingdom (zoho.uk)</option>
-                        <option value="CA">🇨🇦 Canada (zohocloud.ca)</option>
-                        <option value="SA">🇸🇦 Saudi Arabia (zoho.sa)</option>
-                        <option value="AE">🇦🇪 United Arab Emirates (zoho.ae)</option>
-                    </select>
+                    <select id="dcSelect" onchange="onDCChange()"></select>
                 </div>
                 <div class="info-banner" id="accountsUrlBanner">
                     <span class="icon">🌐</span>
@@ -971,17 +960,21 @@
         // ============================
         // Data Center Configuration
         // ============================
-        const DC_CONFIG = {
-            'US': { name: 'United States',  accountsUrl: 'https://accounts.zoho.com',     consoleUrl: 'https://api-console.zoho.com/' },
-            'EU': { name: 'Europe',         accountsUrl: 'https://accounts.zoho.eu',       consoleUrl: 'https://api-console.zoho.eu/' },
-            'IN': { name: 'India',          accountsUrl: 'https://accounts.zoho.in',       consoleUrl: 'https://api-console.zoho.in/' },
-            'AU': { name: 'Australia',      accountsUrl: 'https://accounts.zoho.com.au',   consoleUrl: 'https://api-console.zoho.com.au/' },
-            'JP': { name: 'Japan',          accountsUrl: 'https://accounts.zoho.jp',       consoleUrl: 'https://api-console.zoho.jp/' },
-            'UK': { name: 'United Kingdom', accountsUrl: 'https://accounts.zoho.uk',       consoleUrl: 'https://api-console.zoho.uk/' },
-            'CA': { name: 'Canada',         accountsUrl: 'https://accounts.zohocloud.ca',  consoleUrl: 'https://api-console.zohocloud.ca/' },
-            'SA': { name: 'Saudi Arabia',   accountsUrl: 'https://accounts.zoho.sa',       consoleUrl: 'https://api-console.zoho.sa/' },
-            'AE': { name: 'United Arab Emirates', accountsUrl: 'https://accounts.zoho.ae', consoleUrl: 'https://api-console.zoho.ae/' }
-        };
+        // Built-in DCs — add more here or via EXTRA_DCS env variable on the server.
+        const DC_CONFIG_BASE = [
+            { key: 'US', flag: '🇺🇸', name: 'United States',         accountsUrl: 'https://accounts.zoho.com',        consoleUrl: 'https://api-console.zoho.com/' },
+            { key: 'EU', flag: '🇪🇺', name: 'Europe',                 accountsUrl: 'https://accounts.zoho.eu',          consoleUrl: 'https://api-console.zoho.eu/' },
+            { key: 'IN', flag: '🇮🇳', name: 'India',                  accountsUrl: 'https://accounts.zoho.in',          consoleUrl: 'https://api-console.zoho.in/' },
+            { key: 'AU', flag: '🇦🇺', name: 'Australia',              accountsUrl: 'https://accounts.zoho.com.au',      consoleUrl: 'https://api-console.zoho.com.au/' },
+            { key: 'JP', flag: '🇯🇵', name: 'Japan',                  accountsUrl: 'https://accounts.zoho.jp',          consoleUrl: 'https://api-console.zoho.jp/' },
+            { key: 'UK', flag: '🇬🇧', name: 'United Kingdom',         accountsUrl: 'https://accounts.zoho.uk',          consoleUrl: 'https://api-console.zoho.uk/' },
+            { key: 'CA', flag: '🇨🇦', name: 'Canada',                 accountsUrl: 'https://accounts.zohocloud.ca',     consoleUrl: 'https://api-console.zohocloud.ca/' },
+            { key: 'SA', flag: '🇸🇦', name: 'Saudi Arabia',           accountsUrl: 'https://accounts.zoho.sa',          consoleUrl: 'https://api-console.zoho.sa/' },
+            { key: 'AE', flag: '🇦🇪', name: 'United Arab Emirates',   accountsUrl: 'https://accounts.zoho.ae',          consoleUrl: 'https://api-console.zoho.ae/' },
+        ];
+
+        // Flat map keyed by DC key — populated after merging env extras.
+        let DC_CONFIG = {};
 
         // ============================
         // State
@@ -992,15 +985,15 @@
         // ============================
         // Init
         // ============================
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Set redirect URL
             const baseUrl = window.location.origin;
             const redirectUrl = `${baseUrl}/callback`;
             document.getElementById('redirectUrl').textContent = redirectUrl;
             document.getElementById('redirectUri').value = redirectUrl;
 
-            // Set default DC
-            onDCChange();
+            // Load DC config (built-ins + optional env extras) then render
+            await initDCSelect();
 
             // Check for callback parameters in URL
             handleCallback();
@@ -1011,6 +1004,41 @@
             // Init scope modal
             initScopeModal();
         });
+
+        // ============================
+        // Build DC Select from DC_CONFIG_BASE + server env extras
+        // ============================
+        async function initDCSelect() {
+            let extraDCs = [];
+            try {
+                const res = await fetch('/api/config');
+                if (res.ok) {
+                    const cfg = await res.json();
+                    extraDCs = Array.isArray(cfg.extraDCs) ? cfg.extraDCs : [];
+                }
+            } catch (_) { /* server may not expose /api/config in dev */ }
+
+            // Merge: built-ins first, extras appended (extras override built-ins with same key)
+            const allDCs = [...DC_CONFIG_BASE];
+            extraDCs.forEach(dc => {
+                const idx = allDCs.findIndex(d => d.key === dc.key);
+                if (idx !== -1) allDCs[idx] = { ...allDCs[idx], ...dc };
+                else allDCs.push(dc);
+            });
+
+            // Rebuild DC_CONFIG map
+            DC_CONFIG = {};
+            allDCs.forEach(dc => { DC_CONFIG[dc.key] = dc; });
+
+            // Render <select> options
+            const select = document.getElementById('dcSelect');
+            select.innerHTML = '<option value="">— Select Data Center —</option>' +
+                allDCs.map(dc =>
+                    `<option value="${dc.key}"${dc.key === 'US' ? ' selected' : ''}>${dc.flag ? dc.flag + ' ' : ''}${dc.name} (${new URL(dc.accountsUrl).hostname.replace('accounts.', '')})</option>`
+                ).join('');
+
+            onDCChange();
+        }
 
         // ============================
         // Client Type Toggle

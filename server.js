@@ -12,6 +12,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Config endpoint: exposes extra data-centers injected via EXTRA_DCS env variable.
+// Format: JSON array of DC objects, e.g.
+//   EXTRA_DCS='[{"key":"AA","flag":"🏢","name":"Zoho Test","accountsUrl":"http://accounts.testzoho.com","consoleUrl":"http://api-console.testzoho.com/"}]'
+app.get('/api/config', (req, res) => {
+    let extraDCs = [];
+    if (process.env.EXTRA_DCS) {
+        try {
+            extraDCs = JSON.parse(process.env.EXTRA_DCS);
+        } catch (e) {
+            console.warn('EXTRA_DCS env var is not valid JSON:', e.message);
+        }
+    }
+    res.json({ extraDCs });
+});
+
 // Proxy endpoint: Exchange authorization code or refresh token for tokens
 app.post('/api/token', async (req, res) => {
     const { accountsUrl, params } = req.body;
