@@ -4,9 +4,11 @@
   "description": "Client-side application for Zoho OAuth Token Generation",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "stop": "pkill -f server.js"
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
     "express": "^4.18.2"
   }
 }
