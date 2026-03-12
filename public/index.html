@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nesamani</title>
+    <link rel="icon" type="image/jpeg" href="/nesamani.jpg">
+    <style>
+        :root {
+            --primary: #41431B;
+            --primary-dark: #2e3013;
+            --primary-light: #F8F3E1;
+            --accent: #AEB784;
+            --accent-light: #c5cca4;
+            --success: #6a7d3a;
+            --success-bg: #eef2e4;
+            --danger: #8b3a2a;
+            --danger-bg: #f5e0db;
+            --warning: #7d6b2e;
+            --warning-bg: #F8F3E1;
+            --gray-50: #F8F3E1;
+            --gray-100: #E3DBBB;
+            --gray-200: #d4cba8;
+            --gray-300: #AEB784;
+            --gray-500: #6b6d4f;
+            --gray-700: #41431B;
+            --gray-900: #2e3013;
+            --radius: 10px;
+            --shadow: 0 1px 3px rgba(65,67,27,0.1), 0 4px 12px rgba(65,67,27,0.06);
+            --shadow-lg: 0 4px 12px rgba(65,67,27,0.12), 0 12px 32px rgba(65,67,27,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #41431B 0%, #2e3013 100%);
+            color: #F8F3E1;
+            padding: 24px 0;
+            box-shadow: 0 2px 12px rgba(65,67,27,0.35);
+        }
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-icon {
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .header h1 { font-size: 22px; font-weight: 700; }
+        .header p { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Cards */
+        .card {
+            background: #fffdf5;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        .card-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--gray-700);
+        }
+        .card-header .step {
+            width: 26px; height: 26px;
+            background: var(--primary);
+            color: #F8F3E1;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .card-body { padding: 24px; }
+
+        /* Info Banner */
+        .info-banner {
+            background: var(--primary-light);
+            border: 1px solid #E3DBBB;
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+        }
+        .info-banner .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+        /* Redirect URL Box */
+        .redirect-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .redirect-box label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .redirect-box .url-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .redirect-box code {
+            flex: 1;
+            background: #fffdf5;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            color: var(--primary-dark);
+            word-break: break-all;
+        }
+
+        /* Toggle Switch */
+        .client-type-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .toggle-btn.active {
+            background: #fffdf5;
+            color: var(--primary);
+            box-shadow: 0 1px 4px rgba(65,67,27,0.12);
+            font-weight: 600;
+        }
+        .toggle-btn:hover:not(.active) { color: var(--gray-700); }
+
+        /* Form Elements */
+        .form-row {
+            margin-bottom: 16px;
+        }
+        .form-row:last-child { margin-bottom: 0; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        label.field-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+        label.field-label .required {
+            color: var(--danger);
+            margin-left: 2px;
+        }
+        label.field-label .hint {
+            font-weight: 400;
+            color: var(--gray-500);
+            font-size: 12px;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--gray-900);
+            background: #fffdf5;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(174,183,132,0.25);
+        }
+        input::placeholder, textarea::placeholder {
+            color: var(--gray-300);
+        }
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #F8F3E1;
+        }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+        .btn-success {
+            background: var(--success);
+            color: #F8F3E1;
+        }
+        .btn-success:hover:not(:disabled) { background: #5a6d30; }
+        .btn-outline {
+            background: #fffdf5;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+        .btn-outline:hover:not(:disabled) {
+            background: var(--gray-50);
+            border-color: var(--accent);
+        }
+        .btn-sm { padding: 7px 14px; font-size: 13px; }
+        .btn-copy { 
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+        
+        /* Copy button states */
+        .btn-copy.copied {
+            background: var(--success) !important;
+            color: #F8F3E1 !important;
+            border-color: var(--success) !important;
+            transform: scale(1.05);
+        }
+        
+        .btn-copy.copied::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: copyShine 0.6s ease-in-out;
+        }
+        
+        @keyframes copyShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+        .alert.show { display: flex; }
+        .alert-success { background: var(--success-bg); color: #3d5a1a; border: 1px solid #AEB784; }
+        .alert-error { background: var(--danger-bg); color: #6b2a1e; border: 1px solid #c9a89f; }
+        .alert-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid #E3DBBB; }
+
+        /* Token Result */
+        .token-result {
+            display: none;
+        }
+        .token-result.show { display: block; }
+        .token-item {
+            margin-bottom: 14px;
+        }
+        .token-item:last-child { margin-bottom: 0; }
+        .token-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--gray-500);
+            margin-bottom: 6px;
+        }
+        .token-value-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .token-value {
+            flex: 1;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: var(--gray-900);
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 16px; height: 16px;
+            border: 2px solid rgba(248,243,225,0.3);
+            border-top-color: #F8F3E1;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+        .btn.loading .spinner { display: block; }
+        .btn.loading { pointer-events: none; opacity: 0.7; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Section Divider */
+        .divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: 20px 0;
+        }
+
+        /* Checkbox */
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+        .checkbox-label input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: var(--accent);
+        }
+
+        /* Hidden */
+        .hidden { display: none !important; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .container { padding: 16px; }
+            .card-body { padding: 16px; }
+            .header-inner { flex-direction: column; text-align: center; }
+        }
+
+        /* Auth URL display */
+        .auth-url-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 12px;
+            display: none;
+        }
+        .auth-url-box.show { display: block; }
+        .auth-url-box .url-text {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: var(--gray-700);
+            line-height: 1.5;
+            margin-bottom: 10px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        /* Tabs for sections */
+        .section-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--gray-500);
+            font-size: 12px;
+        }
+
+        /* Collapsible JSON */
+        .json-display {
+            background: #2e3013;
+            color: #E3DBBB;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 12px;
+        }
+
+        .scope-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .scope-chip {
+            padding: 4px 10px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid var(--accent);
+            transition: all 0.2s;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .scope-chip:hover {
+            background: var(--primary);
+            color: #F8F3E1;
+        }
+
+        /* Scope Selector Modal */
+        .scope-action-row {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .scope-selected-inline {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+        .scope-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(46, 48, 19, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .scope-modal.show {
+            display: flex;
+        }
+        .scope-modal-dialog {
+            width: min(1000px, 100%);
+            max-height: 90vh;
+            overflow: hidden;
+            background: #fffdf5;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+        }
+        .scope-modal-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .scope-modal-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+        .scope-modal-body {
+            padding: 16px 18px;
+            overflow: auto;
+        }
+        .scope-service-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .scope-service-tab {
+            border: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            color: var(--gray-700);
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .scope-service-tab.active {
+            background: var(--primary);
+            color: #F8F3E1;
+            border-color: var(--primary);
+        }
+        .scope-actions-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .scope-actions-bar .btn {
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+        .scope-selected-count {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        .scope-module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 8px;
+        }
+        .scope-module-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--primary-light);
+        }
+        .scope-module-name {
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-200);
+            background: rgba(174,183,132,0.2);
+        }
+        .scope-module-name .module-select-all {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .scope-module-name .module-select-all:hover {
+            color: var(--primary);
+        }
+        .scope-module-ops {
+            padding: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .scope-op-chip {
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 5px 9px;
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--gray-700);
+            background: var(--gray-50);
+            cursor: pointer;
+            user-select: none;
+        }
+        .scope-op-chip:hover {
+            border-color: var(--accent);
+            background: var(--primary-light);
+        }
+        .scope-op-chip.selected {
+            background: var(--primary);
+            color: #F8F3E1;
+            border-color: var(--primary);
+        }
+        .scope-modal-footer {
+            padding: 12px 18px;
+            border-top: 1px solid var(--gray-100);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .logo-img {
+            width: 32px; height: 32px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-inner">
+            <div class="header-icon"><img src="/nesamani.jpg" alt="Nesamani" class="logo-img"></div>
+            <div>
+                <h1>NESAMANI</h1>
+                <p>- your Contractor for generating Zoho Oauth Tokens (Generate Access Tokens and Refresh Tokens for Zoho APIs)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Data Center Selection (top-level) -->
+        <div class="card">
+            <div class="card-header">
+                <span class="step">⚙</span>
+                Data Center
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label class="field-label" for="dcSelect">Select your Zoho Data Center (DC) <span class="required">*</span></label>
+                    <select id="dcSelect" onchange="onDCChange()">
+                        <option value="">— Select Data Center —</option>
+                        <option value="US" selected>🇺🇸 United States (zoho.com)</option>
+                        <option value="EU">🇪🇺 Europe (zoho.eu)</option>
+                        <option value="IN">🇮🇳 India (zoho.in)</option>
+                        <option value="AU">🇦🇺 Australia (zoho.com.au)</option>
+                        <option value="JP">🇯🇵 Japan (zoho.jp)</option>
+                        <option value="UK">🇬🇧 United Kingdom (zoho.uk)</option>
+                        <option value="CA">🇨🇦 Canada (zohocloud.ca)</option>
+                        <option value="SA">🇸🇦 Saudi Arabia (zoho.sa)</option>
+                        <option value="AE">🇦🇪 United Arab Emirates (zoho.ae)</option>
+                    </select>
+                </div>
+                <div class="info-banner" id="accountsUrlBanner">
+                    <span class="icon">🌐</span>
+                    <div>
+                        Accounts Server URL: <strong id="accountsUrlDisplay">https://accounts.zoho.com</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Redirect URL Banner -->
+        <div class="redirect-box" id="redirectBox">
+            <label>🔗 Redirect URL — Add this to your client in <a id="apiConsoleUrl" href="https://api-console.zoho.com/" target="_blank" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Zoho API Console ↗</a></label>
+            <div class="url-display">
+                <code id="redirectUrl"></code>
+                <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('redirectUrl')">📋 Copy</button>
+            </div>
+        </div>
+
+        <!-- Step 1: Configuration -->
+        <div class="card">
+            <div class="card-header">
+                <span class="step">1</span>
+                Configuration
+            </div>
+            <div class="card-body">
+                <!-- Client Type Toggle -->
+                <div class="form-row">
+                    <label class="field-label">Client Type</label>
+                    <div class="client-type-toggle">
+                        <button class="toggle-btn active" data-type="server" onclick="switchClientType('server')">
+                            🖥️ Server-Based Client
+                        </button>
+                        <button class="toggle-btn" data-type="self" onclick="switchClientType('self')">
+                            👤 Self Client
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Client ID & Secret -->
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label class="field-label" for="clientId">Client ID <span class="required">*</span></label>
+                        <input type="text" id="clientId" placeholder="1000.XXXXXXXXXXXXXXXXXX">
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="clientSecret">Client Secret <span class="required">*</span></label>
+                        <input type="password" id="clientSecret" placeholder="xxxxxxxxxxxxxxxxxxxxxxxx">
+                    </div>
+                </div>
+
+                <!-- Scopes -->
+                <div class="form-row" id="scopesRow">
+                    <label class="field-label" for="scopes">
+                        Scopes <span class="required">*</span>
+                        <span class="hint">(comma-separated)</span>
+                    </label>
+                    <input type="text" id="scopes" placeholder="SDPOnDemand.requests.ALL,SDPOnDemand.setup.READ">
+                    <div class="scope-suggestions">
+                        <span class="scope-chip" onclick="addScope('SDPOnDemand.requests.ALL')">SDPOnDemand.requests.ALL</span>
+                        <span class="scope-chip" onclick="addScope('SDPOnDemand.setup.READ')">SDPOnDemand.setup.READ</span>
+                    </div>
+                    <div class="scope-action-row">
+                        <button class="btn btn-outline btn-sm" type="button" onclick="openScopeModal()">🧩 Open Scope Selector</button>
+                        <span class="scope-selected-inline" id="scopeInlineCount">0 scopes selected</span>
+                    </div>
+                </div>
+
+                <!-- Redirect URI (Server-Based only) -->
+                <div class="form-row" id="redirectUriRow">
+                    <label class="field-label" for="redirectUri">
+                        Redirect URI <span class="required">*</span>
+                        <span class="hint">(must match API Console)</span>
+                    </label>
+                    <input type="text" id="redirectUri" placeholder="http://localhost:3000/callback">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Get Authorization Code -->
+        <div class="card" id="step2Card">
+            <div class="card-header">
+                <span class="step">2</span>
+                <span id="step2Title">Get Authorization Code</span>
+            </div>
+            <div class="card-body">
+                <!-- Server-Based Flow -->
+                <div id="serverFlow">
+                    <p class="section-desc">
+                        Click the button below to generate the authorization URL. You'll be redirected to Zoho to grant access.
+                        After granting access, you'll be redirected back here with the authorization code.
+                    </p>
+
+                    <div class="form-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="accessTypeOffline" checked>
+                            Request offline access (to get a Refresh Token)
+                        </label>
+                    </div>
+
+                    <div class="form-row" style="margin-top: 12px;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="promptConsent">
+                            Force consent prompt every time
+                        </label>
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="generateAuthUrl()">
+                            🔗 Generate Authorization URL
+                        </button>
+                        <button class="btn btn-success hidden" id="openAuthBtn" onclick="openAuthUrl()">
+                            🚀 Open in Browser
+                        </button>
+                    </div>
+
+                    <div class="auth-url-box" id="authUrlBox">
+                        <div class="url-text" id="authUrlText"></div>
+                        <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('authUrlText')">📋 Copy URL</button>
+                    </div>
+                </div>
+
+                <!-- Self Client Flow -->
+                <div id="selfFlow" class="hidden">
+                    <p class="section-desc">
+                        For Self Clients, generate the authorization code from your
+                        <a href="https://api-console.zoho.com/" target="_blank" style="color: var(--primary); font-weight: 600;">Zoho API Console</a>.
+                        Go to Self Client → Generate Code tab, enter the required scopes, set an expiry, and click CREATE.
+                        Then paste the generated code below.
+                    </p>
+                </div>
+
+                <!-- Authorization Code Input -->
+                <div class="form-row" style="margin-top: 16px;">
+                    <label class="field-label" for="authCode">
+                        Authorization Code <span class="required">*</span>
+                        <span class="hint" id="authCodeHint">(auto-filled after redirect or paste manually)</span>
+                    </label>
+                    <input type="text" id="authCode" placeholder="1000.xxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx">
+                </div>
+
+                <div id="step2Alert" class="alert"></div>
+            </div>
+        </div>
+
+        <!-- Step 3: Generate Tokens -->
+        <div class="card">
+            <div class="card-header">
+                <span class="step">3</span>
+                Generate Tokens
+            </div>
+            <div class="card-body">
+                <p class="section-desc">
+                    Exchange the authorization code for an Access Token and Refresh Token.
+                </p>
+
+                <div id="tokenAlert" class="alert"></div>
+
+                <button class="btn btn-success" id="generateTokenBtn" onclick="generateTokens()">
+                    <span class="spinner"></span>
+                    🎟️ Generate Access & Refresh Token
+                </button>
+
+                <div class="token-result" id="tokenResult">
+                    <div class="divider"></div>
+
+                    <div class="token-item">
+                        <div class="token-label">Access Token</div>
+                        <div class="token-value-box">
+                            <div class="token-value" id="accessToken"></div>
+                            <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('accessToken')">📋</button>
+                        </div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">Refresh Token</div>
+                        <div class="token-value-box">
+                            <div class="token-value" id="refreshToken"></div>
+                            <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('refreshToken')">📋</button>
+                        </div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">API Domain</div>
+                        <div class="token-value-box">
+                            <div class="token-value" id="apiDomain"></div>
+                            <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('apiDomain')">📋</button>
+                        </div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">Token Type</div>
+                        <div class="token-value" id="tokenType"></div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">Expires In</div>
+                        <div class="token-value" id="expiresIn"></div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">Full Response</div>
+                        <div class="json-display" id="fullResponse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Refresh Token -->
+        <div class="card">
+            <div class="card-header">
+                <span class="step">4</span>
+                Refresh Access Token
+            </div>
+            <div class="card-body">
+                <p class="section-desc">
+                    Use a Refresh Token to generate a new Access Token when the current one expires (after 1 hour).
+                </p>
+
+                <div class="form-row">
+                    <label class="field-label" for="refreshTokenInput">
+                        Refresh Token <span class="required">*</span>
+                    </label>
+                    <input type="text" id="refreshTokenInput" placeholder="1000.xxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxx">
+                </div>
+
+                <div id="refreshAlert" class="alert"></div>
+
+                <button class="btn btn-primary" id="refreshTokenBtn" onclick="refreshAccessToken()" style="margin-top: 8px;">
+                    <span class="spinner"></span>
+                    🔄 Refresh Access Token
+                </button>
+
+                <div class="token-result" id="refreshResult">
+                    <div class="divider"></div>
+
+                    <div class="token-item">
+                        <div class="token-label">New Access Token</div>
+                        <div class="token-value-box">
+                            <div class="token-value" id="newAccessToken"></div>
+                            <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('newAccessToken')">📋</button>
+                        </div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">API Domain</div>
+                        <div class="token-value-box">
+                            <div class="token-value" id="refreshApiDomain"></div>
+                            <button class="btn btn-outline btn-sm btn-copy" onclick="copyToClipboard('refreshApiDomain')">📋</button>
+                        </div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">Expires In</div>
+                        <div class="token-value" id="refreshExpiresIn"></div>
+                    </div>
+
+                    <div class="token-item">
+                        <div class="token-label">Full Response</div>
+                        <div class="json-display" id="refreshFullResponse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Zoho OAuth Token Generator &middot; For development use only &middot; Do not expose your Client Secret publicly
+        </div>
+    </div>
+
+    <div class="scope-modal" id="scopeModal" onclick="closeScopeModal(event)">
+        <div class="scope-modal-dialog" onclick="event.stopPropagation()">
+            <div class="scope-modal-header">
+                <div class="scope-modal-title">Select Scopes by Zoho Service</div>
+                <button class="btn btn-outline btn-sm" type="button" onclick="closeScopeModal()">✕ Close</button>
+            </div>
+            <div class="scope-modal-body">
+                <div class="scope-service-tabs" id="scopeServiceTabs"></div>
+                <div class="scope-actions-bar">
+                    <button class="btn btn-primary btn-sm" type="button" onclick="selectAllVisibleScopes()">Select Visible</button>
+                    <button class="btn btn-outline btn-sm" type="button" onclick="selectAllScopes()">Select All Services</button>
+                    <button class="btn btn-outline btn-sm" type="button" onclick="deselectAllScopes()">Deselect All</button>
+                    <span class="scope-selected-count" id="scopeSelectedCount">0 scopes selected</span>
+                </div>
+                <div class="scope-module-grid" id="scopeModuleGrid"></div>
+            </div>
+            <div class="scope-modal-footer">
+                <button class="btn btn-outline" type="button" onclick="closeScopeModal()">Cancel</button>
+                <button class="btn btn-success" type="button" onclick="applySelectedScopesAndClose()">✓ Apply to Scopes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================
+        // Data Center Configuration
+        // ============================
+        const DC_CONFIG = {
+            'US': { name: 'United States',  accountsUrl: 'https://accounts.zoho.com',     consoleUrl: 'https://api-console.zoho.com/' },
+            'EU': { name: 'Europe',         accountsUrl: 'https://accounts.zoho.eu',       consoleUrl: 'https://api-console.zoho.eu/' },
+            'IN': { name: 'India',          accountsUrl: 'https://accounts.zoho.in',       consoleUrl: 'https://api-console.zoho.in/' },
+            'AU': { name: 'Australia',      accountsUrl: 'https://accounts.zoho.com.au',   consoleUrl: 'https://api-console.zoho.com.au/' },
+            'JP': { name: 'Japan',          accountsUrl: 'https://accounts.zoho.jp',       consoleUrl: 'https://api-console.zoho.jp/' },
+            'UK': { name: 'United Kingdom', accountsUrl: 'https://accounts.zoho.uk',       consoleUrl: 'https://api-console.zoho.uk/' },
+            'CA': { name: 'Canada',         accountsUrl: 'https://accounts.zohocloud.ca',  consoleUrl: 'https://api-console.zohocloud.ca/' },
+            'SA': { name: 'Saudi Arabia',   accountsUrl: 'https://accounts.zoho.sa',       consoleUrl: 'https://api-console.zoho.sa/' },
+            'AE': { name: 'United Arab Emirates', accountsUrl: 'https://accounts.zoho.ae', consoleUrl: 'https://api-console.zoho.ae/' }
+        };
+
+        // ============================
+        // State
+        // ============================
+        let currentClientType = 'server'; // 'server' or 'self'
+        let generatedAuthUrl = '';
+
+        // ============================
+        // Init
+        // ============================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set redirect URL
+            const baseUrl = window.location.origin;
+            const redirectUrl = `${baseUrl}/callback`;
+            document.getElementById('redirectUrl').textContent = redirectUrl;
+            document.getElementById('redirectUri').value = redirectUrl;
+
+            // Set default DC
+            onDCChange();
+
+            // Check for callback parameters in URL
+            handleCallback();
+
+            // Load saved config from sessionStorage
+            loadSavedConfig();
+
+            // Init scope modal
+            initScopeModal();
+        });
+
+        // ============================
+        // Client Type Toggle
+        // ============================
+        function switchClientType(type) {
+            currentClientType = type;
+
+            // Update toggle buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+
+            // Show/hide appropriate sections
+            const serverFlow = document.getElementById('serverFlow');
+            const selfFlow = document.getElementById('selfFlow');
+            const redirectUriRow = document.getElementById('redirectUriRow');
+            const redirectBox = document.getElementById('redirectBox');
+            const scopesRow = document.getElementById('scopesRow');
+            const authCodeHint = document.getElementById('authCodeHint');
+
+            if (type === 'server') {
+                serverFlow.classList.remove('hidden');
+                selfFlow.classList.add('hidden');
+                redirectUriRow.classList.remove('hidden');
+                redirectBox.classList.remove('hidden');
+                scopesRow.classList.remove('hidden');
+                authCodeHint.textContent = '(auto-filled after redirect or paste manually)';
+                document.getElementById('step2Title').textContent = 'Get Authorization Code';
+            } else {
+                serverFlow.classList.add('hidden');
+                selfFlow.classList.remove('hidden');
+                redirectUriRow.classList.add('hidden');
+                redirectBox.classList.add('hidden');
+                scopesRow.classList.add('hidden');
+                authCodeHint.textContent = '(paste the code from Zoho API Console)';
+                document.getElementById('step2Title').textContent = 'Enter Authorization Code';
+            }
+        }
+
+        // ============================
+        // DC Change Handler
+        // ============================
+        function onDCChange() {
+            const dc = document.getElementById('dcSelect').value;
+            const config = DC_CONFIG[dc];
+            const consoleEl = document.getElementById('apiConsoleUrl');
+            if (config) {
+                document.getElementById('accountsUrlDisplay').textContent = config.accountsUrl;
+                consoleEl.href = config.consoleUrl;
+                consoleEl.textContent = config.consoleUrl;
+            } else {
+                document.getElementById('accountsUrlDisplay').textContent = 'Select a data center';
+                consoleEl.href = '#';
+                consoleEl.textContent = 'Select a data center first';
+            }
+        }
+
+        // ============================
+        // Get current accounts URL
+        // ============================
+        function getAccountsUrl() {
+            const dc = document.getElementById('dcSelect').value;
+            const config = DC_CONFIG[dc];
+            return config ? config.accountsUrl : null;
+        }
+
+        // ============================
+        // Add scope chip
+        // ============================
+        function addScope(scope) {
+            const input = document.getElementById('scopes');
+            const current = input.value.trim();
+            if (current) {
+                // Check if scope already exists
+                const scopes = current.split(',').map(s => s.trim());
+                if (!scopes.includes(scope)) {
+                    input.value = current + ',' + scope;
+                }
+            } else {
+                input.value = scope;
+            }
+        }
+
+        // ============================
+        // Scope Selector Modal (Multi-Service)
+        // ============================
+        const SCOPE_OPS = ['READ', 'ALL', 'CREATE', 'UPDATE', 'DELETE'];
+
+        const ZOHO_SCOPE_LIBRARY = {
+            SDPOnDemand: {
+                label: 'ServiceDesk Plus',
+                prefix: 'SDPOnDemand',
+                modules: [
+                    { key: 'requests', label: 'Requests' },
+                    { key: 'problems', label: 'Problems' },
+                    { key: 'changes', label: 'Changes' },
+                    { key: 'projects', label: 'Projects' },
+                    { key: 'releases', label: 'Releases' },
+                    { key: 'assets', label: 'Assets' },
+                    { key: 'cmdb', label: 'CMDB' },
+                    { key: 'contracts', label: 'Contracts' },
+                    { key: 'purchases', label: 'Purchases' },
+                    { key: 'custommodule', label: 'Custom Module' },
+                    { key: 'solutions', label: 'Solutions' },
+                    { key: 'setup', label: 'Setup' },
+                    { key: 'users', label: 'Users' },
+                    { key: 'general', label: 'General' }
+                ]
+            },
+            ZohoCliq: {
+                label: 'Zoho Cliq',
+                prefix: 'ZohoCliq',
+                modules: [
+                    { key: 'Channels', label: 'Channels' },
+                    { key: 'Messages', label: 'Messages' },
+                    { key: 'Users', label: 'Users' },
+                    { key: 'Teams', label: 'Teams' },
+                    { key: 'Bots', label: 'Bots' },
+                    { key: 'Webhooks', label: 'Webhooks' },
+                    { key: 'Calls', label: 'Calls' }
+                ]
+            },
+            ZohoMail: {
+                label: 'Zoho Mail',
+                prefix: 'ZohoMail',
+                modules: [
+                    { key: 'accounts', label: 'Accounts' },
+                    { key: 'messages', label: 'Messages' },
+                    { key: 'folders', label: 'Folders' },
+                    { key: 'settings', label: 'Settings' },
+                    { key: 'contacts', label: 'Contacts' },
+                    { key: 'calendar', label: 'Calendar' }
+                ]
+            },
+            ZohoProjects: {
+                label: 'Zoho Projects',
+                prefix: 'ZohoProjects',
+                modules: [
+                    { key: 'projects', label: 'Projects' },
+                    { key: 'tasks', label: 'Tasks' },
+                    { key: 'timesheets', label: 'Timesheets' },
+                    { key: 'users', label: 'Users' },
+                    { key: 'portals', label: 'Portals' },
+                    { key: 'documents', label: 'Documents' }
+                ]
+            },
+            Desk: {
+                label: 'Zoho Desk',
+                prefix: 'Desk',
+                modules: [
+                    { key: 'tickets', label: 'Tickets' },
+                    { key: 'contacts', label: 'Contacts' },
+                    { key: 'accounts', label: 'Accounts' },
+                    { key: 'tasks', label: 'Tasks' },
+                    { key: 'basic', label: 'Basic' },
+                    { key: 'settings', label: 'Settings' },
+                    { key: 'events', label: 'Events' }
+                ]
+            }
+        };
+
+        const selectedScopes = new Set();
+        let activeScopeService = 'SDPOnDemand';
+
+        function initScopeModal() {
+            renderScopeServiceTabs();
+            syncSelectedScopesFromInput();
+            renderScopeGrid();
+            updateScopeCounts();
+        }
+
+        function renderScopeServiceTabs() {
+            const tabs = document.getElementById('scopeServiceTabs');
+            tabs.innerHTML = Object.entries(ZOHO_SCOPE_LIBRARY).map(([key, service]) =>
+                `<button class="scope-service-tab ${key === activeScopeService ? 'active' : ''}" type="button" onclick="switchScopeService('${key}')">${service.label}</button>`
+            ).join('');
+        }
+
+        function switchScopeService(serviceKey) {
+            activeScopeService = serviceKey;
+            renderScopeServiceTabs();
+            renderScopeGrid();
+        }
+
+        function renderScopeGrid() {
+            const grid = document.getElementById('scopeModuleGrid');
+            const service = ZOHO_SCOPE_LIBRARY[activeScopeService];
+            if (!service) return;
+            grid.innerHTML = service.modules.map(module =>
+                `<div class="scope-module-card">
+                    <div class="scope-module-name">
+                        <span>${module.label}</span>
+                        <span class="module-select-all" onclick="toggleModuleScopes('${activeScopeService}', '${module.key}')">Toggle All</span>
+                    </div>
+                    <div class="scope-module-ops">
+                        ${SCOPE_OPS.map(op => {
+                            const scope = `${service.prefix}.${module.key}.${op}`;
+                            return `<span class="scope-op-chip ${selectedScopes.has(scope) ? 'selected' : ''}" onclick="toggleScopeChip('${scope}', this)">${op}</span>`;
+                        }).join('')}
+                    </div>
+                </div>`
+            ).join('');
+        }
+
+        function toggleScopeChip(scope, el) {
+            if (selectedScopes.has(scope)) {
+                selectedScopes.delete(scope);
+                el.classList.remove('selected');
+            } else {
+                selectedScopes.add(scope);
+                el.classList.add('selected');
+            }
+            updateScopeCounts();
+        }
+
+        function toggleModuleScopes(serviceKey, moduleKey) {
+            const service = ZOHO_SCOPE_LIBRARY[serviceKey];
+            if (!service) return;
+            const moduleScopes = SCOPE_OPS.map(op => `${service.prefix}.${moduleKey}.${op}`);
+            const allSelected = moduleScopes.every(scope => selectedScopes.has(scope));
+
+            moduleScopes.forEach(scope => {
+                if (allSelected) {
+                    selectedScopes.delete(scope);
+                } else {
+                    selectedScopes.add(scope);
+                }
+            });
+
+            renderScopeGrid();
+            updateScopeCounts();
+        }
+
+        function selectAllVisibleScopes() {
+            const service = ZOHO_SCOPE_LIBRARY[activeScopeService];
+            const visibleScopes = service ? service.modules.flatMap(module =>
+                SCOPE_OPS.map(op => `${service.prefix}.${module.key}.${op}`)
+            ) : [];
+            visibleScopes.forEach(scope => selectedScopes.add(scope));
+            renderScopeGrid();
+            updateScopeCounts();
+        }
+
+        function selectAllScopes() {
+            Object.values(ZOHO_SCOPE_LIBRARY).forEach(service => {
+                service.modules.forEach(module => {
+                    SCOPE_OPS.forEach(op => {
+                        selectedScopes.add(`${service.prefix}.${module.key}.${op}`);
+                    });
+                });
+            });
+            renderScopeGrid();
+            updateScopeCounts();
+        }
+
+        function deselectAllScopes() {
+            selectedScopes.clear();
+            renderScopeGrid();
+            updateScopeCounts();
+        }
+
+        function openScopeModal() {
+            syncSelectedScopesFromInput();
+            renderScopeServiceTabs();
+            renderScopeGrid();
+            updateScopeCounts();
+            document.getElementById('scopeModal').classList.add('show');
+        }
+
+        function closeScopeModal(evt) {
+            if (evt && evt.target && evt.target.id !== 'scopeModal') return;
+            document.getElementById('scopeModal').classList.remove('show');
+        }
+
+        function updateScopeCounts() {
+            const count = `${selectedScopes.size} scope${selectedScopes.size !== 1 ? 's' : ''} selected`;
+            document.getElementById('scopeSelectedCount').textContent = count;
+            document.getElementById('scopeInlineCount').textContent = count;
+        }
+
+        function syncSelectedScopesFromInput() {
+            selectedScopes.clear();
+            const inputVal = document.getElementById('scopes').value.trim();
+            if (!inputVal) {
+                updateScopeCounts();
+                return;
+            }
+            inputVal.split(',').map(s => s.trim()).filter(Boolean).forEach(scope => selectedScopes.add(scope));
+            updateScopeCounts();
+        }
+
+        function applySelectedScopesToInput() {
+            const input = document.getElementById('scopes');
+            const existing = input.value.trim().split(',').map(s => s.trim()).filter(Boolean);
+            const merged = [...new Set([...existing, ...selectedScopes])];
+            input.value = merged.join(',');
+        }
+
+        function applySelectedScopesAndClose() {
+            applySelectedScopesToInput();
+            closeScopeModal();
+        }
+
+        // ============================
+        // Generate Authorization URL (Server-Based)
+        // ============================
+        function generateAuthUrl() {
+            const accountsUrl = getAccountsUrl();
+            const clientId = document.getElementById('clientId').value.trim();
+            const scopes = document.getElementById('scopes').value.trim();
+            const redirectUri = document.getElementById('redirectUri').value.trim();
+            const accessType = document.getElementById('accessTypeOffline').checked ? 'offline' : 'online';
+            const prompt = document.getElementById('promptConsent').checked ? 'consent' : '';
+
+            // Validate
+            if (!accountsUrl) return showAlert('step2Alert', 'error', 'Please select a Data Center.');
+            if (!clientId) return showAlert('step2Alert', 'error', 'Please enter your Client ID.');
+            if (!scopes) return showAlert('step2Alert', 'error', 'Please enter at least one scope.');
+            if (!redirectUri) return showAlert('step2Alert', 'error', 'Please enter the Redirect URI.');
+
+            // Save config to sessionStorage (survives redirect)
+            saveConfig();
+
+            // Build URL
+            const params = new URLSearchParams({
+                client_id: clientId,
+                response_type: 'code',
+                redirect_uri: redirectUri,
+                scope: scopes,
+                access_type: accessType,
+            });
+            if (prompt) params.set('prompt', prompt);
+
+            generatedAuthUrl = `${accountsUrl}/oauth/v2/auth?${params.toString()}`;
+
+            // Display
+            document.getElementById('authUrlText').textContent = generatedAuthUrl;
+            document.getElementById('authUrlBox').classList.add('show');
+            document.getElementById('openAuthBtn').classList.remove('hidden');
+
+            showAlert('step2Alert', 'success', 'Authorization URL generated! Click "Open in Browser" or copy the URL.');
+        }
+
+        // ============================
+        // Open Auth URL
+        // ============================
+        function openAuthUrl() {
+            if (generatedAuthUrl) {
+                window.location.href = generatedAuthUrl;
+            }
+        }
+
+        // ============================
+        // Handle OAuth Callback
+        // ============================
+        function handleCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const error = params.get('error');
+            const location = params.get('location');
+
+            if (code) {
+                document.getElementById('authCode').value = code;
+                showAlert('step2Alert', 'success',
+                    `Authorization code received!${location ? ' User location: ' + location : ''} You can now generate tokens in Step 3.`
+                );
+
+                // Clean URL without reloading
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Auto-scroll to step 3
+                setTimeout(() => {
+                    document.getElementById('generateTokenBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 500);
+            }
+
+            if (error) {
+                showAlert('step2Alert', 'error', `Authorization failed: ${error}`);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // ============================
+        // Generate Tokens (Exchange Code)
+        // ============================
+        async function generateTokens() {
+            const accountsUrl = getAccountsUrl();
+            const clientId = document.getElementById('clientId').value.trim();
+            const clientSecret = document.getElementById('clientSecret').value.trim();
+            const authCode = document.getElementById('authCode').value.trim();
+            const redirectUri = document.getElementById('redirectUri').value.trim();
+
+            // Validate
+            if (!accountsUrl) return showAlert('tokenAlert', 'error', 'Please select a Data Center.');
+            if (!clientId) return showAlert('tokenAlert', 'error', 'Please enter your Client ID.');
+            if (!clientSecret) return showAlert('tokenAlert', 'error', 'Please enter your Client Secret.');
+            if (!authCode) return showAlert('tokenAlert', 'error', 'Please enter the Authorization Code.');
+
+            // Build params
+            const params = {
+                client_id: clientId,
+                client_secret: clientSecret,
+                grant_type: 'authorization_code',
+                code: authCode,
+            };
+
+            // Server-based flow requires redirect_uri
+            if (currentClientType === 'server') {
+                if (!redirectUri) return showAlert('tokenAlert', 'error', 'Please enter the Redirect URI.');
+                params.redirect_uri = redirectUri;
+            }
+
+            // Make request through proxy
+            const btn = document.getElementById('generateTokenBtn');
+            btn.classList.add('loading');
+            hideAlert('tokenAlert');
+
+            try {
+                const response = await fetch('/api/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accountsUrl, params })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    showAlert('tokenAlert', 'error', `Error: ${data.error}`);
+                    document.getElementById('tokenResult').classList.remove('show');
+                } else if (data.access_token) {
+                    // Success!
+                    document.getElementById('accessToken').textContent = data.access_token || '—';
+                    document.getElementById('refreshToken').textContent = data.refresh_token || '(not returned — did you request offline access?)';
+                    document.getElementById('apiDomain').textContent = data.api_domain || '—';
+                    document.getElementById('tokenType').textContent = data.token_type || '—';
+                    document.getElementById('expiresIn').textContent = data.expires_in ? `${data.expires_in} seconds (${Math.round(data.expires_in / 60)} minutes)` : '—';
+                    document.getElementById('fullResponse').textContent = JSON.stringify(data, null, 2);
+                    document.getElementById('tokenResult').classList.add('show');
+
+                    // Auto-fill refresh token input
+                    if (data.refresh_token) {
+                        document.getElementById('refreshTokenInput').value = data.refresh_token;
+                    }
+
+                    showAlert('tokenAlert', 'success', 'Tokens generated successfully!');
+                } else {
+                    showAlert('tokenAlert', 'error', `Unexpected response: ${JSON.stringify(data)}`);
+                    document.getElementById('tokenResult').classList.remove('show');
+                }
+            } catch (err) {
+                showAlert('tokenAlert', 'error', `Request failed: ${err.message}`);
+            } finally {
+                btn.classList.remove('loading');
+            }
+        }
+
+        // ============================
+        // Refresh Access Token
+        // ============================
+        async function refreshAccessToken() {
+            const accountsUrl = getAccountsUrl();
+            const clientId = document.getElementById('clientId').value.trim();
+            const clientSecret = document.getElementById('clientSecret').value.trim();
+            const refreshTokenVal = document.getElementById('refreshTokenInput').value.trim();
+
+            // Validate
+            if (!accountsUrl) return showAlert('refreshAlert', 'error', 'Please select a Data Center.');
+            if (!clientId) return showAlert('refreshAlert', 'error', 'Please enter your Client ID in Step 1.');
+            if (!clientSecret) return showAlert('refreshAlert', 'error', 'Please enter your Client Secret in Step 1.');
+            if (!refreshTokenVal) return showAlert('refreshAlert', 'error', 'Please enter the Refresh Token.');
+
+            const params = {
+                client_id: clientId,
+                client_secret: clientSecret,
+                grant_type: 'refresh_token',
+                refresh_token: refreshTokenVal,
+            };
+
+            const btn = document.getElementById('refreshTokenBtn');
+            btn.classList.add('loading');
+            hideAlert('refreshAlert');
+
+            try {
+                const response = await fetch('/api/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accountsUrl, params })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    showAlert('refreshAlert', 'error', `Error: ${data.error}`);
+                    document.getElementById('refreshResult').classList.remove('show');
+                } else if (data.access_token) {
+                    document.getElementById('newAccessToken').textContent = data.access_token || '—';
+                    document.getElementById('refreshApiDomain').textContent = data.api_domain || '—';
+                    document.getElementById('refreshExpiresIn').textContent = data.expires_in ? `${data.expires_in} seconds (${Math.round(data.expires_in / 60)} minutes)` : '—';
+                    document.getElementById('refreshFullResponse').textContent = JSON.stringify(data, null, 2);
+                    document.getElementById('refreshResult').classList.add('show');
+
+                    showAlert('refreshAlert', 'success', 'Access token refreshed successfully!');
+                } else {
+                    showAlert('refreshAlert', 'error', `Unexpected response: ${JSON.stringify(data)}`);
+                    document.getElementById('refreshResult').classList.remove('show');
+                }
+            } catch (err) {
+                showAlert('refreshAlert', 'error', `Request failed: ${err.message}`);
+            } finally {
+                btn.classList.remove('loading');
+            }
+        }
+
+        // ============================
+        // Alert Helpers
+        // ============================
+        function showAlert(id, type, message) {
+            const el = document.getElementById(id);
+            el.className = `alert alert-${type} show`;
+            el.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span><span>${message}</span>`;
+        }
+        function hideAlert(id) {
+            const el = document.getElementById(id);
+            el.className = 'alert';
+        }
+
+        // ============================
+        // Copy to Clipboard
+        // ============================
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            const btn = event.currentTarget;
+            const originalText = btn.textContent;
+            const originalIcon = btn.querySelector('span') ? btn.querySelector('span').textContent : '';
+            
+            // Visual feedback function
+            function showCopySuccess() {
+                // Add copied class for styling
+                btn.classList.add('copied');
+                
+                // Change button text and icon
+                if (btn.innerHTML.includes('<span>')) {
+                    btn.innerHTML = btn.innerHTML.replace(/(<span[^>]*>)[^<]*(<\/span>)/, '$1✓$2') + ' Copied!';
+                } else {
+                    btn.textContent = '✓ Copied!';
+                }
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    if (originalIcon) {
+                        btn.innerHTML = btn.innerHTML.replace(/✓/, originalIcon).replace(' Copied!', '');
+                    } else {
+                        btn.textContent = originalText;
+                    }
+                }, 2000);
+            }
+
+            // Try modern clipboard API first
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopySuccess();
+                }).catch(() => {
+                    // Fallback to older method
+                    fallbackCopy(text, showCopySuccess);
+                });
+            } else {
+                // Use fallback method
+                fallbackCopy(text, showCopySuccess);
+            }
+        }
+
+        // Fallback copy method for older browsers
+        function fallbackCopy(text, callback) {
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                if (success && callback) {
+                    callback();
+                }
+            } catch (err) {
+                console.error('Copy failed:', err);
+                // Even on error, show some feedback
+                if (callback) callback();
+            }
+        }
+
+        // ============================
+        // Persist Config (survives OAuth redirect)
+        // ============================
+        function saveConfig() {
+            sessionStorage.setItem('zoho_oauth_config', JSON.stringify({
+                clientType: currentClientType,
+                dc: document.getElementById('dcSelect').value,
+                clientId: document.getElementById('clientId').value,
+                clientSecret: document.getElementById('clientSecret').value,
+                scopes: document.getElementById('scopes').value,
+                redirectUri: document.getElementById('redirectUri').value,
+                accessTypeOffline: document.getElementById('accessTypeOffline').checked,
+                promptConsent: document.getElementById('promptConsent').checked,
+            }));
+        }
+
+        function loadSavedConfig() {
+            const saved = sessionStorage.getItem('zoho_oauth_config');
+            if (!saved) return;
+
+            try {
+                const config = JSON.parse(saved);
+                if (config.clientType) switchClientType(config.clientType);
+                if (config.dc) {
+                    document.getElementById('dcSelect').value = config.dc;
+                    onDCChange();
+                }
+                if (config.clientId) document.getElementById('clientId').value = config.clientId;
+                if (config.clientSecret) document.getElementById('clientSecret').value = config.clientSecret;
+                if (config.scopes) document.getElementById('scopes').value = config.scopes;
+                if (config.redirectUri) document.getElementById('redirectUri').value = config.redirectUri;
+                if (config.accessTypeOffline !== undefined) document.getElementById('accessTypeOffline').checked = config.accessTypeOffline;
+                if (config.promptConsent !== undefined) document.getElementById('promptConsent').checked = config.promptConsent;
+            } catch (e) {
+                // Ignore parse errors
+            }
+        }
+    </script>
+</body>
+</html>

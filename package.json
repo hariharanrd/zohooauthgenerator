@@ -1,0 +1,12 @@
+{
+  "name": "zoho-oauth-token-generator",
+  "version": "1.0.0",
+  "description": "Client-side application for Zoho OAuth Token Generation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
